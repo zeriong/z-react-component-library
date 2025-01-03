@@ -1,9 +1,8 @@
 # 📚Z - React Component LIBRARY
-<!--
+
 ### in development . . .
--->
 
-
+<!--
 
 <h3>
   Isn't it a hassle to create components every time you do a new project?<br/><br/>
@@ -27,10 +26,13 @@
     If you think this site is helpful, please give me one star⭐
   </h4>
 </blockquote>
-<br/>
-<br/>
+
+<br/><br/>
+
 <h5>
   🛠️ Created - Next.js 15.1.3v ( React.js 19v )
   <br/><br/>
   🎨 Style - Tailwindcss
 </h5>
+
+-->

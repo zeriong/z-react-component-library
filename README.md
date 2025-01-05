@@ -3,7 +3,7 @@
 ### in development . . .
 <br/>
 <h5> 
-  🛠️ Created - Next.js 15.1.3v ( React.js 19v )
+  🛠️ Created - Next.js 15.1.3v ( React.js 18v )
   <br/><br/>
   🎨 Style - Tailwindcss
 </h5>
@@ -36,7 +36,7 @@
 <br/><br/>
 
 <h5>
-  🛠️ Created - Next.js 15.1.3v ( React.js 19v )
+  🛠️ Created - Next.js 15.1.3v ( React.js 18v )
   <br/><br/>
   🎨 Style - Tailwindcss
 </h5>

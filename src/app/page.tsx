@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Canvas, useThree } from "@react-three/fiber";
 import { useTexture } from "@react-three/drei";
+import * as THREE from "three";
 
 interface DraggableMapProps {
   svgPath: string;
@@ -14,16 +15,37 @@ const DraggableMap = ({ svgPath, svgSize }: DraggableMapProps) => {
   return (
     <mesh>
       <planeGeometry args={[svgSize.width, svgSize.height]} />
-      <meshBasicMaterial map={texture} transparent={true} />
+      <meshBasicMaterial map={texture} />
     </mesh>
   );
 };
 
-// Map style Camera control
 const MapControls = ({ svgSize }: { svgSize: { width: number; height: number } }) => {
-  const { camera, viewport } = useThree();
+  const { camera, size } = useThree();
   const [isDragging, setIsDragging] = useState(false);
   const dragStart = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
+
+  const limits = useRef({ halfWidth: 0, halfHeight: 0 });
+
+  // 이동 제한 범위를 동적으로 계산
+  const updateLimits = () => {
+    let visibleWidth, visibleHeight;
+
+    if ((camera as THREE.PerspectiveCamera).isPerspectiveCamera) {
+      const perspectiveCamera = camera as THREE.PerspectiveCamera;
+      const distance = perspectiveCamera.position.z;
+      const fov = (perspectiveCamera.fov * Math.PI) / 180;
+      visibleHeight = 2 * Math.tan(fov / 2) * distance;
+      visibleWidth = visibleHeight * (size?.width / size?.height);
+    } else if ((camera as THREE.OrthographicCamera).isOrthographicCamera) {
+      const orthographicCamera = camera as THREE.OrthographicCamera;
+      visibleWidth = orthographicCamera.right - orthographicCamera.left;
+      visibleHeight = orthographicCamera.top - orthographicCamera.bottom;
+    }
+
+    limits.current.halfWidth = svgSize.width / 2 - visibleWidth / 2;
+    limits.current.halfHeight = svgSize.height / 2 - visibleHeight / 2;
+  };
 
   const handlePointerDown = (event: React.PointerEvent) => {
     setIsDragging(true);
@@ -36,9 +58,7 @@ const MapControls = ({ svgSize }: { svgSize: { width: number; height: number } }
     const deltaX = (event.clientX - dragStart.current.x) * 0.2;
     const deltaY = (event.clientY - dragStart.current.y) * 0.2;
 
-    // Calculating movement limits based on screen size and ratio
-    const halfWidth = svgSize.width / 2 - viewport.width / 2;
-    const halfHeight = svgSize.height / 2 - viewport.height / 2;
+    const { halfWidth, halfHeight } = limits.current;
 
     const newX = camera.position.x - deltaX;
     const newY = camera.position.y + deltaY;
@@ -53,21 +73,25 @@ const MapControls = ({ svgSize }: { svgSize: { width: number; height: number } }
     setIsDragging(false);
   };
 
+  useEffect(() => {
+    updateLimits();
+  }, [size?.width]);
+
   return (
     <mesh
       onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
-      visible={false} // ? Invisible mesh for dragging
+      onPointerLeave={handlePointerUp}
+      visible={false}
     >
-      <planeGeometry
-        // ! Set the same size as the SVG file ( width, height )
-        args={[1118, 822]}
-      />
+      <planeGeometry args={[svgSize.width, svgSize.height]} />
       <meshBasicMaterial transparent={true} opacity={0} />
     </mesh>
   );
 };
+
+// *
 
 export default function Page() {
   // ! Set the same size as the SVG file ( width, height )
@@ -75,18 +99,27 @@ export default function Page() {
   const svgSize = { width: 1118, height: 822 };
 
   return (
-    <section className={"flex flex-col w-full h-screen"}>
-      <h1 className={"text-[80px] font-bold py-[30px] text-center"}>Look at this map!</h1>
-      {/* Map section */}
-      <div className={"w-full bg-red-500 p-[20px] grow"}>
-        <Canvas className={"w-full h-full"} camera={{ position: [0, 0, 120], fov: 100 }}>
-          <ambientLight />
-          {/* Camera control by dragging */}
-          <MapControls svgSize={svgSize} />
-          {/* SVG Map */}
-          <DraggableMap svgPath="/svg/japan_map.svg" svgSize={svgSize} />
-        </Canvas>
-      </div>
-    </section>
+    <>
+      <section className={"flex flex-col w-full h-screen"}>
+        <div className={"text-[80px] font-bold py-[30px] flex justify-center relative"}>
+          <p>Look at this map!</p>
+        </div>
+
+        {/* Map section */}
+        <div className={`primary-transition relative bg-red-500 p-[20px] grow w-[calc(100%-200px)]`}>
+          <Canvas className={`w-full h-full`} camera={{ position: [0, 0, 120], fov: 100 }}>
+            <ambientLight />
+            {/* Camera control by dragging */}
+            <MapControls svgSize={svgSize} />
+            {/* SVG Map */}
+            <DraggableMap svgPath="/svg/japan_map.svg" svgSize={svgSize} />
+          </Canvas>
+        </div>
+      </section>
+
+      <aside className={`fixed primary-transition flex flex-col h-full w-[200px] bg-blue-300 top-0 right-0`}>
+        Aside
+      </aside>
+    </>
   );
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { Canvas, useThree } from "@react-three/fiber";
+import { Canvas, ThreeEvent, useThree } from "@react-three/fiber";
 import { useTexture } from "@react-three/drei";
 import * as THREE from "three";
 
@@ -47,12 +47,12 @@ const MapControls = ({ svgSize }: { svgSize: { width: number; height: number } }
     limits.current.halfHeight = svgSize.height / 2 - visibleHeight / 2;
   };
 
-  const handlePointerDown = (event: React.PointerEvent) => {
+  const handlePointerDown = (event: ThreeEvent<PointerEvent>) => {
     setIsDragging(true);
     dragStart.current = { x: event.clientX, y: event.clientY };
   };
 
-  const handlePointerMove = (event: React.PointerEvent) => {
+  const handlePointerMove = (event: ThreeEvent<PointerEvent>) => {
     if (!isDragging) return;
 
     const deltaX = (event.clientX - dragStart.current.x) * 0.2;

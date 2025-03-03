@@ -1,8 +1,8 @@
 import React from "react";
 
-export default function Aside() {
+export default function MainAside() {
   return (
-    <aside>
+    <aside className={""}>
       aside bar
       <ul>
         <li></li>

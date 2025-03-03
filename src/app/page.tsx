@@ -11,14 +11,19 @@ interface IProps {
 export default function RootPage(props: IProps) {
   return (
     <>
-      {/* main content */}
-      <main>{props.children}</main>
-
       {/* root header */}
       <MainHeader />
 
-      {/* root aside bar */}
-      <MainAside />
+      {/* aside + content wrapper  */}
+      <div className={"flex h-full grow"}>
+        <>
+          {/* main content */}
+          <main>{props.children}</main>
+
+          {/* root aside bar */}
+          <MainAside />
+        </>
+      </div>
     </>
   );
 }

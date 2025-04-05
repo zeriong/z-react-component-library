@@ -1,8 +1,8 @@
 "use client";
 
 import React, { ReactNode } from "react";
-import MainHeader from "@/components/layout/MainHeader";
-import MainAside from "@/components/layout/MainAside";
+import MainHeader from "@/components/layout/header/MainHeader";
+import MainAside from "@/components/layout/aside/MainAside";
 
 interface IProps {
   children?: ReactNode;

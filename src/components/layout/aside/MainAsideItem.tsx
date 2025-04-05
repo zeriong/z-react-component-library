@@ -1,13 +1,8 @@
 import Link from "next/link";
 import React from "react";
+import { IAsideListItem } from "@/constants/aside";
 
-interface Props {
-  id: string;
-  name: string;
-  href: string;
-}
-
-export default function MainAsideItem(props: Props) {
+export default function MainAsideItem(props: IAsideListItem) {
   const { name, href } = props;
 
   return (

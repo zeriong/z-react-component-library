@@ -1,6 +1,10 @@
 import React from "react";
 import { IAsideListItem } from "@/constants/aside";
 
+interface Props {
+  listItem: IAsideListItem;
+}
+
 export default function MainAsideItem({ listItem }: Props) {
   const { name } = listItem;
 
@@ -13,8 +17,4 @@ export default function MainAsideItem({ listItem }: Props) {
       {name}
     </li>
   );
-}
-
-interface Props {
-  listItem: IAsideListItem;
 }

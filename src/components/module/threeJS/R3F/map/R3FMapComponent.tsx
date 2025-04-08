@@ -112,7 +112,7 @@ export default function R3FMapComponent() {
             {/* Camera control by dragging */}
             <MapControls svgSize={svgSize} />
             {/* SVG Map */}
-            <DraggableMap svgPath="/svg/japan_map.svg" svgSize={svgSize} />
+            <DraggableMap svgPath="/svg/three/japan_map.svg" svgSize={svgSize} />
           </Canvas>
         </div>
       </section>

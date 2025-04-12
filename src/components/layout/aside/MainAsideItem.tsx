@@ -3,7 +3,7 @@
 import React from "react";
 import { IAsideListItem } from "@/constants/aside";
 import MainAsideInnerItem from "@/components/layout/aside/MainAsideInnerItem";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useQueryString } from "@/hooks/useQueryString";
 
 interface Props {
   listItem: IAsideListItem;
@@ -12,10 +12,10 @@ interface Props {
 export default function MainAsideItem({ listItem }: Props) {
   const { name, children } = listItem;
 
-  const router = useRouter();
+  const { setParam } = useQueryString();
 
   function handleAccordion() {
-    router.replace();
+    setParam("ss", "dd", true);
   }
 
   return (

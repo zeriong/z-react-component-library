@@ -3,15 +3,12 @@
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-interface Props {
-  isReplace: boolean;
-}
-export const useQueryString = ({ isReplace }: Props) => {
+export const useQueryString = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
 
-  function routerAction(urlString: string) {
+  function routerAction(urlString: string, isReplace?: boolean) {
     if (isReplace) router.replace(urlString);
     else router.push(urlString);
   }
@@ -20,14 +17,14 @@ export const useQueryString = ({ isReplace }: Props) => {
     return routerAction(key);
   }
 
-  function setSingleParam(key: string, value: string) {
-    routerAction(`${pathname}?${key}=${value}`);
+  function setSingleParam(key: string, value: string, isReplace?: boolean) {
+    routerAction(`${pathname}?${key}=${value}`, isReplace);
   }
 
-  function setParam(key: string, value: string) {
+  function setParam(key: string, value: string, isReplace?: boolean) {
     const params = new URLSearchParams(searchParams.toString());
     params.set(key, value);
-    routerAction(`${pathname}?${params.toString()}`);
+    routerAction(`${pathname}?${params.toString()}`, isReplace);
   }
 
   function deleteParam(key: string) {

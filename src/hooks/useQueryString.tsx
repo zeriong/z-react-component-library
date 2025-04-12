@@ -16,17 +16,21 @@ export const useQueryString = ({ isReplace }: Props) => {
     else router.push(urlString);
   }
 
-  const getParam = (key: string) => {
+  function getParam(key: string) {
     return routerAction(key);
-  };
+  }
 
-  const setParam = (key: string, value: string) => {
+  function setSingleParam(key: string, value: string) {
+    routerAction(`${pathname}?${key}=${value}`);
+  }
+
+  function setParam(key: string, value: string) {
     const params = new URLSearchParams(searchParams.toString());
     params.set(key, value);
     routerAction(`${pathname}?${params.toString()}`);
-  };
+  }
 
-  const deleteParam = (key: string) => {
+  function deleteParam(key: string) {
     const params = new URLSearchParams(searchParams.toString());
     params.delete(key);
 
@@ -34,15 +38,16 @@ export const useQueryString = ({ isReplace }: Props) => {
     const url = queryStr ? `${pathname}?${queryStr}` : pathname;
 
     routerAction(url);
-  };
+  }
 
-  const clearAllParams = () => {
+  function clearAllParams() {
     routerAction(pathname);
-  };
+  }
 
   return {
     getParam,
     setParam,
+    setSingleParam,
     deleteParam,
     clearAllParams,
     allParams: searchParams,

@@ -4,13 +4,14 @@ import React from "react";
 import { IAsideListItem } from "@/constants/aside";
 import MainAsideInnerItem from "@/components/layout/aside/MainAsideInnerItem";
 import { useQueryString } from "@/hooks/useQueryString";
+import Link from "next/link";
 
 interface Props {
   listItem: IAsideListItem;
 }
 
 export default function MainAsideItem({ listItem }: Props) {
-  const { name, children } = listItem;
+  const { name, children, href } = listItem;
 
   const { setParam } = useQueryString();
 
@@ -20,7 +21,8 @@ export default function MainAsideItem({ listItem }: Props) {
 
   return (
     <li>
-      <button
+      <Link
+        href={href}
         type={"button"}
         className={
           "text-start w-full py-4 px-[20px] block font-bold text-[24px] transition-all duration-200 cursor-pointer rounded-md hover:bg-sky-100"
@@ -28,7 +30,7 @@ export default function MainAsideItem({ listItem }: Props) {
         onClick={() => handleAccordion()}
       >
         {name}
-      </button>
+      </Link>
       {children?.length && (
         <ul className={"text-[18px] p-[12px] bg-gray-100 rounded-sm"}>
           {children.map((item) => {
